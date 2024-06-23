@@ -31,7 +31,7 @@ exports.buscarPersonas= function(respuesta){
 exports.buscarMedico= function(){
         conectar();
         return new Promise((resolve, reject) => {
-        const consulta = "SELECT DISTINCT us.id_usuario, us.nombre, us.apellido, us.mail, us.tipo_usuario, us.foto_perfil, med.id_medico, med.especialidad, med.foto_especialidad, med.foto_especialidad FROM usuario AS us, medico AS med WHERE us.id_usuario = med.id_usuario";
+        const consulta = "SELECT DISTINCT us.id_usuario, us.nombre, us.user, us.apellido, us.mail, us.tipo_usuario, us.foto_perfil, med.id_medico, med.especialidad, med.foto_especialidad, med.foto_especialidad FROM usuario AS us, medico AS med WHERE us.id_usuario = med.id_usuario";
         
         conexion.query(consulta, (error, resultado) => {
             if (error) {
@@ -43,6 +43,7 @@ exports.buscarMedico= function(){
             id_usuario: resultado.id_usuario,
             nombre: resultado.nombre,
             apellido: resultado.apellido,
+            user:resultado.user,
             tipo_usuario: resultado.tipo_usuario,
             foto_perfil: resultado.foto_perfil,
             especialidad: resultado.especialidad,
@@ -113,7 +114,19 @@ exports.borrarPersona = function(usuario, retornar){
            retornar(resultado);
    
        } );
+}
+
+exports.AutorizacionUsuario = function(usuario, respuesta){
+    conectar();
+
+    const sql = "UPDATE medico SET autorizado = ? WHERE id_usuario = ? ;";
+    const values = [usuario.autorizado, usuario.id_usuario];
 
 
+    conexion.query(sql, values, function (err, resultado) {
+        if(err) throw err;
+        console.log(resultado);
+       return respuesta(resultado);
+    });
 }
 

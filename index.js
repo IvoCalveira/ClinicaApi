@@ -57,6 +57,14 @@ app.delete('/borrar/', (req,res) => {
 
 })
 
+app.post('/autorizar' , (req,res) => {
+
+    var usuario = req.body;
+
+    aplicacion.autorizacion(usuario,res);
+
+});
+
 
 app.listen(process.env.PORT || 3000, ()=> {
 

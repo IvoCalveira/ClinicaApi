@@ -44,3 +44,11 @@ exports.borrar = function(usuario, res){
     
 }
 
+exports.autorizacion = function(usuario,res){
+
+    db.AutorizacionUsuario(usuario, datos => {
+        res.json(datos);
+    });
+
+}
+

@@ -1,0 +1,10 @@
+{
+  "projectName": "clinicaapi",
+  "meta": {
+    "type": "backend"
+  },
+  "backend": {
+    "platform": "node17"
+  },
+  "hash": "abd382b1"
+}

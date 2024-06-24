@@ -42,7 +42,7 @@ const pool = mysql.createPool({
 
 exports.buscarPersonas= function(respuesta){
     conectar();
-    conexion.query("SELECT * FROM usuario", function(err, resultado, filas){
+    conexion.query("SELECT DISTINCT med.id_usuario, us.nombre, us.apellido, us.mail, us.user, us.password, us.tipo_usuario, us.fec_nac, us.foto_perfil, med.autorizado FROM usuario AS us, medico AS med WHERE us.id_usuario = med.id_usuario;", function(err, resultado, filas){
         if(err) throw err;
         console.log(resultado);
         respuesta(resultado);

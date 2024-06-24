@@ -10,14 +10,35 @@ var conexion = mysql.createConnection({
 });
 
 function conectar(){
-
     conexion.connect(function(err){
         if(err) console.log(err);
         else
         console.log('conexion exitosa');
     })
-
 }
+const pool = mysql.createPool({
+    connectionLimit: 10, // Límite de conexiones en el pool
+    host: 'mysql.db.mdbgo.com',
+    user: 'ivo_calveira_calveiraivo',
+    password: 'Admin2024!**',
+    database: 'ivo_calveira_clinica',
+    port: 3306
+});
+ exports.verificarUsuario = function (usuario, callback) {
+     conectar()
+     const sql = "SELECT * FROM usuario WHERE user = ? AND password = ? OR mail = ?";
+     const values = [usuario.user, usuario.password, usuario.mail]
+     conexion.query(sql, values, function (err, results){ 
+         if (err) {
+             return callback(err);
+         }
+         if (results.length > 0) {
+             return callback(null, true); // Usuario y password ya existen
+         } else {
+             return callback(null, false); // Usuario y password no existen
+         }
+     });  
+ };
 
 exports.buscarPersonas= function(respuesta){
     conectar();
@@ -57,8 +78,11 @@ exports.buscarMedico= function(){
 };
 
 exports.insertarPersona = function(usuario, retornar){
-    conectar();
-
+    // conectar();
+    pool.getConnection(function (err, conexion) {
+        if (err) {
+            return retornar(err);
+        }
     var sql = "INSERT INTO usuario (nombre, apellido, mail, fec_nac, user, password, tipo_usuario, foto_perfil) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
     var values = [usuario.nombre, usuario.apellido, usuario.mail, usuario.nacimiento, usuario.user,usuario.password, usuario.tipo_usuario, usuario.foto_perfil];
     
@@ -99,6 +123,7 @@ exports.insertarPersona = function(usuario, retornar){
                 });
             }
         });
+    });
 }
 
 

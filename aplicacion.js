@@ -33,9 +33,15 @@ function validarusuario(datos, usuario) {
 }
 
 exports.insertar = function (usuario, res) {
-
-    db.insertarPersona(usuario, datos => { res.json(datos) });
-
+     db.verificarUsuario(usuario, function(err, existe) {
+     if (err) {
+         return res.status(500).json({ error: 'Error en la base de datos' });
+     }
+     if (existe) {
+         return res.status(400).json({ error: 'Usuario con el mismo usuario y password ya existe' });
+     }
+    db.insertarPersona(usuario, datos => { res.json(datos)});
+ });
 }
 
 exports.borrar = function(usuario, res){

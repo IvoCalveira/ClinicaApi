@@ -16,6 +16,7 @@ function conectar(){
         console.log('conexion exitosa');
     })
 }
+//Actualmente usando la base de datos de la cuenta ivo_calveira pero el proyecto de ivo_calveira2
 const pool = mysql.createPool({
     connectionLimit: 10, // Límite de conexiones en el pool
     host: 'mysql.db.mdbgo.com',

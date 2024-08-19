@@ -90,7 +90,9 @@ exports.insertarPersona = function(usuario, retornar){
         function(err, resultado){
            if(err) throw err;
            console.log(resultado);
-           
+           if(usuario.tipo_usuario == 1){
+            return retornar(resultado);
+           }
            const idmedico = resultado.insertId;
            if(usuario.tipo_usuario == 2 || usuario.tipo_usuario == 3){
             //acá inserta en la tabla médicos

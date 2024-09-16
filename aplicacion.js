@@ -22,9 +22,9 @@ exports.leerMedico = async (req, res)  => {
 
 function validarusuario(datos, usuario) {
     for (i = 0; i < datos.length; i++) {
-        element = datos[i];
+        let element = datos[i];
         if (element.user == usuario.user && element.password == usuario.password)
-            return element;
+            return jwt.sign({ exp: Math.floor(Date.now()/1000) + (60 * 60), data: element }, "superclave");
 
     };
 

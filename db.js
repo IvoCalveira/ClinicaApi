@@ -26,6 +26,7 @@ const pool = mysql.createPool({
     database: 'ivo_calveira_clinica',
     port: 3306
 });
+
  exports.verificarUsuario = function (usuario, callback) {
      conectar()
      const sql = "SELECT * FROM usuario WHERE user = ? AND password = ? OR mail = ?";
@@ -47,7 +48,7 @@ exports.buscarPersonas= function(respuesta){
     conexion.query("SELECT DISTINCT * FROM usuario;", function(err, resultado, filas){
         if(err) throw err;
         console.log(resultado);
-        respuesta(resultado);
+       return respuesta(resultado);
     });
 }
 

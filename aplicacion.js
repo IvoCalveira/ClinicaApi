@@ -1,10 +1,11 @@
 //de acá se va a db.js
 var db = require('./db');
+var jwt = require('jsonwebtoken');
 
 exports.leer = function(usuario,res){
 
     db.buscarPersonas(datos => {
-        res.json(validarusuario(datos,usuario))
+        res.json(validarusuario(datos, usuario))
     } );
 
 }
@@ -21,15 +22,14 @@ exports.leerMedico = async (req, res)  => {
 }
 
 function validarusuario(datos, usuario) {
-    for (i = 0; i < datos.length; i++) {
+    for (let i = 0; i < datos.length; i++) {
+        console.log(datos[i]);
         let element = datos[i];
         if (element.user == usuario.user && element.password == usuario.password)
-            return jwt.sign({ exp: Math.floor(Date.now()/1000) + (60 * 60), data: element }, "superclave");
-
-    };
-
-    return null;
-
+            {
+                return jwt.sign({ exp: Math.floor(Date.now() / 1000) + (60 * 60), data: element }, "superclave");
+            }
+        }
 }
 
 exports.insertar = function (usuario, res) {

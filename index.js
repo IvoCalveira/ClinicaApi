@@ -1,6 +1,7 @@
 var express = require('express')
 var cors = require('cors')
 var aplicacion = require('./aplicacion')
+var jwt = require('jsonwebtoken');
 
 
 var app = express();
@@ -13,6 +14,15 @@ app.use(cors());
 app.get('/prueba/', (req, res) => {
 
     res.send("hola mundo");
+
+    var token = "";
+    if(req.headers.authorization.split(" ")[0] == 'Bearer')
+        token = req.headers.authorization.split(" ")[1];
+
+    var resultado = jwt.verify(token,"superclave", function(err,token){
+        if(err)
+            res.send(err.message);
+    });
 
 });
 

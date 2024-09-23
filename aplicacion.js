@@ -58,3 +58,25 @@ exports.autorizacion = function(usuario,res){
 
 }
 
+exports.turnos = async(req,res) =>{
+
+    try {
+        const data = await db.buscarMedicosDisponibilidad();
+        res.json(data); // Enviar datos como JSON
+      } catch (error) {
+        res.status(500).json({ error: 'Error al obtener los datos' }); // Enviar error como JSON
+      }
+
+};
+
+exports.buscarTurnos = async(req,res) =>{
+
+    try {
+        const data = await db.turnosTomados();
+        res.json(data); // Enviar datos como JSON
+      } catch (error) {
+        res.status(500).json({ error: 'Error al obtener los datos' }); // Enviar error como JSON
+      }
+
+};
+

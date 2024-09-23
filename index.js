@@ -75,6 +75,18 @@ app.post('/autorizar' , (req,res) => {
 
 });
 
+app.post('/turnos', (req, res) => {
+
+    aplicacion.turnos(req,res);
+
+});
+
+
+app.post('/leer_tomados', (req, res) => {
+
+    aplicacion.buscarTurnos(req,res);
+
+});
 
 app.listen(process.env.PORT || 3000, ()=> {
 

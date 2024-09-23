@@ -246,3 +246,17 @@ exports.nuevoTurno = function(usuario, respuesta){
      });
      
    }
+
+   exports.turnosTomados = function(){
+    conectar();
+
+    return new Promise((resolve, reject) => {
+        conexion.query("SELECT * FROM turnos", (error,results) =>{
+            if(error){
+                return reject;
+            }
+             resolve(results);   
+        });
+    });
+   
+}

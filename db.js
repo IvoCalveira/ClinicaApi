@@ -211,8 +211,8 @@ exports.buscarMedicosDisponibilidad = function() {
                     result.jueves,
                     result.viernes
                 ],
-              horas_desde: result.horas_desde,
-                horas_hasta: result.horas_hasta
+                horario_desde: result.horas_desde,
+                horario_hasta: result.horas_hasta
            }));
 
            resolve(processedResults);

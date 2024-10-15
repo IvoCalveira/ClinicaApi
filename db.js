@@ -251,8 +251,37 @@ exports.nuevoTurno = function(usuario, respuesta){
 exports.misTPaciente = function(usuario, respuesta){
     conectar();
 
-    const sql = "SELECT t.*, u.nombre, u.apellido, m.especialidad FROM turnos as t, medico as m, usuario as u WHERE t.id_usuario = 1 AND m.id_medico = t.id_medico AND m.id_usuario = u.id_usuario AND t.estado = 'Aceptado'";
-    const values = [usuario.id,];
+    const sql = "SELECT t.*, u.nombre, u.apellido, m.especialidad FROM turnos t JOIN medico m ON m.id_medico = t.id_medicoJOIN usuario u ON m.id_usuario = u.id_usuarioWHERE t.id_usuario = '?' AND t.estado = 'Aceptado';";
+    const values = usuario.id_usuario;
+
+
+    conexion.query(sql, values, function(err, resultado) {
+        if(err) throw err;
+        console.log(resultado);
+        respuesta(resultado);
+    });
+}
+
+
+exports.aceptarT = function(turno, respuesta){
+    conectar();
+
+    const sql = "UPDATE turnos SET estado = 'Aceptado' WHERE id_turno = ?;";
+    const values = [turno.id_turno];
+
+
+    conexion.query(sql, values, function (err, resultado) {
+        if(err) throw err;
+        console.log(resultado);
+        respuesta(resultado);
+    });
+}
+
+exports.rechazarT = function(turno, respuesta){
+    conectar();
+
+    const sql = "UPDATE turnos SET estado = 'Rechazado' WHERE id_turno = ?;";
+    const values = [turno.id_turno];
 
 
     conexion.query(sql, values, function (err, resultado) {

@@ -89,7 +89,28 @@ exports.insertarTurno = function (usuario, res) {
 
 exports.TraerMisTurnosPaciente = function(usuario,res){
 
+    if (!usuario.id_usuario) {
+        console.error('ID de usuario no definido.');
+        return res.status(400).send('ID de usuario es requerido.');
+      }
+
     db.misTPaciente(usuario, datos => {
+        res.json(datos);
+    });
+
+}
+
+exports.aceptarTurno = function(turno,res){
+
+    db.aceptarT(turno, datos => {
+        res.json(datos);
+    });
+
+}
+
+exports.rechazarTurno = function(turno,res){
+
+    db.rechazarT(turno, datos => {
         res.json(datos);
     });
 

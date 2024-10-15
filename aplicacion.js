@@ -80,3 +80,18 @@ exports.buscarTurnos = async(req,res) =>{
 
 };
 
+exports.insertarTurno = function (usuario, res) {
+
+    db.nuevoTurno(usuario, datos => {
+        res.json(datos);
+    });
+}
+
+exports.TraerMisTurnosPaciente = function(usuario,res){
+
+    db.misTPaciente(usuario, datos => {
+        res.json(datos);
+    });
+
+}
+

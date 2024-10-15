@@ -223,8 +223,8 @@ exports.buscarMedicosDisponibilidad = function() {
 exports.nuevoTurno = function(usuario, respuesta){
     conectar();
       
-      const sql = "INSERT into turnos (id_usuario, id_medico, hora ,fecha ,aceptado) VALUES (?,?,?,?,?);";
-      const values = [usuario.id_usuario, resultado.idmedico, usuario.hora, usuario.fecha, usuario.aceptado];
+      const sql = "INSERT into turnos (id_usuario, id_medico, hora ,fecha ,estado) VALUES (?,?,?,?,?);";
+      const values = [usuario.id_usuario, usuario.id_medico, usuario.hora, usuario.fecha, usuario.estado];
   
       conexion.query(sql, values, function (err, resultado) {
          if(err) throw err;
@@ -247,16 +247,17 @@ exports.nuevoTurno = function(usuario, respuesta){
      
    }
 
-   exports.turnosTomados = function(){
+
+exports.misTPaciente = function(usuario, respuesta){
     conectar();
 
-    return new Promise((resolve, reject) => {
-        conexion.query("SELECT * FROM turnos", (error,results) =>{
-            if(error){
-                return reject;
-            }
-             resolve(results);   
-        });
+    const sql = "SELECT t.*, u.nombre, u.apellido, m.especialidad FROM turnos as t, medico as m, usuario as u WHERE t.id_usuario = 1 AND m.id_medico = t.id_medico AND m.id_usuario = u.id_usuario AND t.estado = 'Aceptado'";
+    const values = [usuario.id,];
+
+
+    conexion.query(sql, values, function (err, resultado) {
+        if(err) throw err;
+        console.log(resultado);
+        respuesta(resultado);
     });
-   
 }

@@ -81,12 +81,26 @@ app.post('/turnos', (req, res) => {
 
 });
 
+app.post('/tomar_turno', (req, res) => {
+
+    var usuario = req.body;
+
+    aplicacion.insertarTurno(usuario, res);
+    
+})
+
 
 app.post('/leer_tomados', (req, res) => {
 
     aplicacion.buscarTurnos(req,res);
 
 });
+app.post('/leer_tomadosPaciente', (req, res) => {
+
+    aplicacion.TraerMisTurnosPaciente(req,res);
+
+});
+
 
 app.listen(process.env.PORT || 3000, ()=> {
 

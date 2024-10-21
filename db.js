@@ -237,7 +237,7 @@ exports.nuevoTurno = function(usuario, respuesta){
       conectar();
   
       return new Promise((resolve, reject) => {
-          conexion.query("SELECT * FROM turnos", (error,results) =>{
+          conexion.query("SELECT t.*, u.nombre, u.apellido FROM turnos t JOIN usuario u ON t.id_usuario = u.id_usuario WHERE estado = 'Pendiente'", (error,results) =>{
               if(error){
                  return reject;
               }

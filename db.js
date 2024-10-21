@@ -45,7 +45,7 @@ const pool = mysql.createPool({
 
 exports.buscarPersonas= function(respuesta){
     conectar();
-    conexion.query("SELECT DISTINCT * FROM usuario;", function(err, resultado, filas){
+    conexion.query("SELECT u.*, m.id_medico FROM usuario u LEFT JOIN medico m ON u.id_usuario = m.id_usuario", function(err, resultado, filas){
         if(err) throw err;
         console.log(resultado);
        return respuesta(resultado);
@@ -251,8 +251,22 @@ exports.nuevoTurno = function(usuario, respuesta){
 exports.misTPaciente = function(usuario, respuesta){
     conectar();
 
-    const sql = "SELECT t.*, u.nombre, u.apellido, m.especialidad FROM turnos t JOIN medico m ON m.id_medico = t.id_medicoJOIN usuario u ON m.id_usuario = u.id_usuarioWHERE t.id_usuario = '?' AND t.estado = 'Aceptado';";
-    const values = usuario.id_usuario;
+    const sql = "SELECT t.*, u.nombre, u.apellido, m.especialidad FROM turnos t JOIN medico m ON m.id_medico = t.id_medico JOIN usuario u ON m.id_usuario = u.id_usuario WHERE t.id_usuario = ? AND t.estado = 'Aceptado'";
+    const values = [usuario.id_usuario,];
+
+
+    conexion.query(sql, values, function(err, resultado) {
+        if(err) throw err;
+        console.log(resultado);
+        respuesta(resultado);
+    });
+}
+
+exports.leerTFinalizados = function(usuario, respuesta){
+    conectar();
+
+    const sql = "SELECT t.*, u.nombre, u.apellido, m.especialidad FROM turnos t JOIN medico m ON m.id_medico = t.id_medico JOIN usuario u ON m.id_usuario = u.id_usuario WHERE t.id_medico = ? AND t.estado = 'Aceptado'";
+    const values = [usuario.id_medico,];
 
 
     conexion.query(sql, values, function(err, resultado) {
@@ -282,6 +296,34 @@ exports.rechazarT = function(turno, respuesta){
 
     const sql = "UPDATE turnos SET estado = 'Rechazado' WHERE id_turno = ?;";
     const values = [turno.id_turno];
+
+
+    conexion.query(sql, values, function (err, resultado) {
+        if(err) throw err;
+        console.log(resultado);
+        respuesta(resultado);
+    });
+}
+
+exports.finalizarT = function(turno, respuesta){
+    conectar();
+
+    const sql = "UPDATE turnos SET estado = 'Finalizado' WHERE id_turno = ?;";
+    const values = [turno.id_turno];
+
+
+    conexion.query(sql, values, function (err, resultado) {
+        if(err) throw err;
+        console.log(resultado);
+        respuesta(resultado);
+    });
+}
+
+exports.modificarH = function(usuario, respuesta){
+    conectar();
+    const diasHabiles = usuario.dias_habiles.map(dia => dia ? 1 : 0);
+    const sql = "UPDATE dias_habiles SET lunes = ?, martes = ?, miercoles = ?, jueves = ?, viernes = ?,  horas_desde = ?, horas_hasta = ? WHERE id_medico = ?;";
+    const values = [diasHabiles[0], diasHabiles[1],diasHabiles[2], diasHabiles[3], diasHabiles[4], usuario.horario_desde, usuario.horario_hasta, usuario.id_medico];
 
 
     conexion.query(sql, values, function (err, resultado) {

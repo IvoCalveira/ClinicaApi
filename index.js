@@ -95,9 +95,20 @@ app.post('/leer_tomados', (req, res) => {
     aplicacion.buscarTurnos(req,res);
 
 });
+
 app.post('/leer_tomadosPaciente', (req, res) => {
 
-    aplicacion.TraerMisTurnosPaciente(req,res);
+    var usuario = req.body;
+    
+    aplicacion.TraerMisTurnosPaciente(usuario,res);
+
+});
+
+app.post('/leer_finalizado', (req, res) => {
+
+    var usuario = req.body;
+    
+    aplicacion.leerTurnosFinalizados(usuario,res);
 
 });
 
@@ -114,6 +125,23 @@ app.post('/rechazar_turno' , (req,res) => {
     var turno = req.body;
 
     aplicacion.rechazarTurno(turno,res);
+
+});
+
+app.post('/finalizar_turno', (req, res) => {
+
+    var turno = req.body;
+    
+    aplicacion.finalizarTurno(turno,res);
+
+});
+
+app.post('/modificar_horario', (req, res) => {
+
+    console.log(req.body);
+    var usuario = req.body;
+    
+    aplicacion.modificarHorarios(usuario,res);
 
 });
 

@@ -265,7 +265,7 @@ exports.misTPaciente = function(usuario, respuesta){
 exports.leerTFinalizados = function(usuario, respuesta){
     conectar();
 
-    const sql = "SELECT t.*, u.nombre, u.apellido, m.especialidad FROM turnos t JOIN medico m ON m.id_medico = t.id_medico JOIN usuario u ON m.id_usuario = u.id_usuario WHERE t.id_medico = ? AND t.estado = 'Aceptado'";
+    const sql = "SELECT t.*, u.nombre AS nombre, u.apellido AS apellido, m.especialidad FROM turnos t JOIN medico m ON m.id_medico = t.id_medico JOIN usuario u ON u.id_usuario = t.id_usuario WHERE t.id_medico = ? AND t.estado = 'Aceptado';";
     const values = [usuario.id_medico,];
 
 
